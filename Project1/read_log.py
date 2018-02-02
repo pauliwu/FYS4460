@@ -25,8 +25,3 @@ df['KinEng'].plot()
 df['PotEng'].plot()
 plt.show()
 
-temp = df['KinEng'].values * (2/3)  # k_B = ???
-df['Temp'].plot()
-plt.plot(temp)
-plt.show()
-

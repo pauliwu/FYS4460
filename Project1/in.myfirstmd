@@ -12,7 +12,7 @@ velocity all create 2.5 87287 dist uniform
 pair_style lj/cut 3.0
 pair_coeff 1 1 1.0 1.0 3.0
 fix 1 all nve
-dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz fx fy fz
+dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz
 thermo_style custom step temp ke pe etotal press vol atoms
 thermo 100
 run 5000
