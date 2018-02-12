@@ -1,8 +1,9 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
 def read_log(log, thermo):
-    with open(log, 'r') as infile:
+     with open(log, 'r') as infile:
         with open(thermo, 'w') as outfile:
             header = 'Step'
             bottom = 'Loop'
@@ -14,14 +15,14 @@ def read_log(log, thermo):
                 outfile.write(line)
                 line = infile.readline()
 
-read_log('log.lammps', 'thermo.csv')
-df = pd.read_csv('thermo.csv', delim_whitespace=True)
-N = df['Atoms'].iloc[0]
+for temp in [1, 2, 3, 5, 10]:
+    infile = "logs/log.temp_%d" % temp
+    outfile = "diffs/diff_temp_%d.csv" % temp
+    
+    if("log.temp_%d" % temp not in os.listdir('logs')):
+        os.system('lammps < in.diffusion -log ' + infile + ' -var temp %f' % temp)
+        read_log(infile, outfile)
 
-df['TotEng'].divide(df['TotEng'].max()).plot()
+    df = pd.read_csv(outfile, delim_whitespace=True)
+    df['msd[4]'].plot()
 plt.show()
-
-df['KinEng'].plot()
-df['PotEng'].plot()
-plt.show()
-

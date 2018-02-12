@@ -1,0 +1,119 @@
+LAMMPS (17 Nov 2015)
+WARNING: OMP_NUM_THREADS environment is not set. (../comm.cpp:90)
+  using 1 OpenMP thread(s) per MPI task
+# 3d Lennard-Jones gas
+units lj
+dimension 3
+boundary p p p
+atom_style atomic
+
+lattice fcc ${rho}
+lattice fcc 0.020000
+Lattice spacing in x,y,z = 5.84804 5.84804 5.84804
+region simbox block 0 10 0 10 0 10
+create_box 1 simbox
+Created orthogonal box = (0 0 0) to (58.4804 58.4804 58.4804)
+  1 by 1 by 1 MPI processor grid
+create_atoms 1 box
+Created 4000 atoms
+
+mass 1 1.0
+velocity all create ${temp} 87287
+velocity all create 10.000000 87287
+
+pair_style lj/cut 3.0
+pair_coeff 1 1 1.0 1.0 3.0
+
+fix 1 all nve
+
+dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz
+thermo_style custom step temp density press
+thermo 100
+run 5000
+Neighbor list info ...
+  1 neighbor list requests
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 3.3
+  ghost atom cutoff = 3.3
+  binsize = 1.65 -> bins = 36 36 36
+Memory usage per processor = 4.28886 Mbytes
+Step Temp Density Press 
+       0           10         0.02      0.19995 
+     100    10.036792         0.02    0.2037627 
+     200    10.040987         0.02   0.20416278 
+     300    10.034285         0.02   0.20615269 
+     400     10.04335         0.02   0.20420769 
+     500    10.043206         0.02   0.20450678 
+     600    10.027326         0.02   0.20630573 
+     700    10.042418         0.02   0.20519517 
+     800    10.036247         0.02   0.20510511 
+     900    10.039672         0.02   0.20479002 
+    1000    10.034413         0.02   0.20514469 
+    1100     10.04918         0.02    0.2031835 
+    1200     10.04251         0.02   0.20448286 
+    1300    10.031677         0.02   0.20612002 
+    1400    10.033454         0.02   0.20584321 
+    1500     10.03583         0.02   0.20505399 
+    1600    10.034208         0.02    0.2056803 
+    1700    10.043017         0.02   0.20455828 
+    1800    10.037212         0.02   0.20418275 
+    1900    10.023844         0.02   0.20713441 
+    2000    10.042395         0.02   0.20452309 
+    2100    10.020531         0.02   0.20798995 
+    2200    10.038952         0.02   0.20381522 
+    2300    10.020104         0.02   0.20737212 
+    2400    10.024014         0.02   0.20733555 
+    2500    10.037638         0.02     0.204889 
+    2600    10.035949         0.02   0.20493104 
+    2700    10.044309         0.02   0.20357616 
+    2800    10.032819         0.02   0.20596854 
+    2900    10.027639         0.02   0.20627092 
+    3000    10.034676         0.02   0.20652314 
+    3100    10.047583         0.02    0.2035463 
+    3200    10.043761         0.02   0.20476693 
+    3300    10.031406         0.02    0.2061165 
+    3400     10.03465         0.02   0.20571288 
+    3500    10.040953         0.02   0.20496591 
+    3600    10.042561         0.02   0.20487932 
+    3700    10.037042         0.02   0.20507725 
+    3800     10.03743         0.02   0.20543683 
+    3900     10.02949         0.02   0.20641209 
+    4000     10.05539         0.02   0.20314598 
+    4100    10.043204         0.02   0.20416349 
+    4200     10.04005         0.02   0.20427537 
+    4300    10.038485         0.02    0.2045482 
+    4400    10.027005         0.02    0.2063874 
+    4500    10.034126         0.02   0.20583761 
+    4600    10.035434         0.02   0.20473566 
+    4700    10.039458         0.02   0.20449083 
+    4800    10.041117         0.02   0.20364412 
+    4900    10.045133         0.02   0.20494172 
+    5000    10.048333         0.02   0.20319386 
+Loop time of 4.93299 on 1 procs for 5000 steps with 4000 atoms
+
+Performance: 437868.580 tau/day, 1013.585 timesteps/s
+99.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.59457    | 0.59457    | 0.59457    |   0.0 | 12.05
+Neigh   | 0.55638    | 0.55638    | 0.55638    |   0.0 | 11.28
+Comm    | 0.074937   | 0.074937   | 0.074937   |   0.0 |  1.52
+Output  | 3.5293     | 3.5293     | 3.5293     |   0.0 | 71.54
+Modify  | 0.14976    | 0.14976    | 0.14976    |   0.0 |  3.04
+Other   |            | 0.02804    |            |       |  0.57
+
+Nlocal:    4000 ave 4000 max 4000 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    1510 ave 1510 max 1510 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    5897 ave 5897 max 5897 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 5897
+Ave neighs/atom = 1.47425
+Neighbor list builds = 500
+Dangerous builds = 500
+Total wall time: 0:00:05
