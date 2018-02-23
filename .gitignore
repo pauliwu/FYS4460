@@ -106,4 +106,5 @@ ENV/
 # LAMMPS
 *.lammpstrj
 *.lammps
-
+Project1/*/logs/
+Project1/*/data/

@@ -91,20 +91,20 @@ Step KinEng PotEng TotEng
     4800    3.8054232 -0.062013886    3.7434093 
     4900    3.7992527 -0.055704713     3.743548 
     5000    3.8053839 -0.062111801    3.7432721 
-Loop time of 4.66097 on 1 procs for 5000 steps with 4000 atoms
+Loop time of 4.6867 on 1 procs for 5000 steps with 4000 atoms
 
-Performance: 926845.468 tau/day, 1072.738 timesteps/s
-99.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+Performance: 921756.917 tau/day, 1066.848 timesteps/s
+99.1% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.37597    | 0.37597    | 0.37597    |   0.0 |  8.07
-Neigh   | 0.45163    | 0.45163    | 0.45163    |   0.0 |  9.69
-Comm    | 0.060993   | 0.060993   | 0.060993   |   0.0 |  1.31
-Output  | 3.5982     | 3.5982     | 3.5982     |   0.0 | 77.20
-Modify  | 0.14641    | 0.14641    | 0.14641    |   0.0 |  3.14
-Other   |            | 0.02772    |            |       |  0.59
+Pair    | 0.37491    | 0.37491    | 0.37491    |   0.0 |  8.00
+Neigh   | 0.45307    | 0.45307    | 0.45307    |   0.0 |  9.67
+Comm    | 0.060944   | 0.060944   | 0.060944   |   0.0 |  1.30
+Output  | 3.624      | 3.624      | 3.624      |   0.0 | 77.33
+Modify  | 0.14759    | 0.14759    | 0.14759    |   0.0 |  3.15
+Other   |            | 0.02617    |            |       |  0.56
 
 Nlocal:    4000 ave 4000 max 4000 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -117,4 +117,4 @@ Total # of neighbors = 3045
 Ave neighs/atom = 0.76125
 Neighbor list builds = 500
 Dangerous builds = 500
-Total wall time: 0:00:04
+Total wall time: 0:00:05

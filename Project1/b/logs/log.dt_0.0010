@@ -91,20 +91,20 @@ Step KinEng PotEng TotEng
     4800    3.8039086 -0.057827085    3.7460816 
     4900    3.8079642 -0.061894134    3.7460701 
     5000    3.8055048 -0.059475357    3.7460294 
-Loop time of 4.24577 on 1 procs for 5000 steps with 4000 atoms
+Loop time of 4.239 on 1 procs for 5000 steps with 4000 atoms
 
-Performance: 101748.329 tau/day, 1177.643 timesteps/s
-98.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+Performance: 101910.923 tau/day, 1179.525 timesteps/s
+98.5% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.28024    | 0.28024    | 0.28024    |   0.0 |  6.60
-Neigh   | 0.14018    | 0.14018    | 0.14018    |   0.0 |  3.30
-Comm    | 0.038335   | 0.038335   | 0.038335   |   0.0 |  0.90
-Output  | 3.5955     | 3.5955     | 3.5955     |   0.0 | 84.68
-Modify  | 0.14489    | 0.14489    | 0.14489    |   0.0 |  3.41
-Other   |            | 0.04662    |            |       |  1.10
+Pair    | 0.27715    | 0.27715    | 0.27715    |   0.0 |  6.54
+Neigh   | 0.13962    | 0.13962    | 0.13962    |   0.0 |  3.29
+Comm    | 0.038758   | 0.038758   | 0.038758   |   0.0 |  0.91
+Output  | 3.5882     | 3.5882     | 3.5882     |   0.0 | 84.65
+Modify  | 0.14672    | 0.14672    | 0.14672    |   0.0 |  3.46
+Other   |            | 0.0485     |            |       |  1.14
 
 Nlocal:    4000 ave 4000 max 4000 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
