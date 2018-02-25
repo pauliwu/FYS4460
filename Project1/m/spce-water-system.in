@@ -1,5 +1,3 @@
-
-
 # ----------------- Init Section -----------------
 
 include "spce-water-system.in.init"
@@ -17,8 +15,11 @@ include "spce-water-system.in.settings"
 # ----------------- Run Section -----------------
 
 timestep        1.0
-fix             fxnpt all npt temp 300.0 300.0 100.0 iso 1.0 1.0 1000.0 drag 1.0
+fix             fxnpt all npt temp ${temp} ${temp} 100.0 iso 1.0 1.0 1000.0 drag 1.0
 
-dump            1 all custom 10 traj_npt.lammpstrj id mol type x y z ix iy iz
+compute msd all msd com yes
+
+dump            1 all custom 10 ${dump} id mol type x y z ix iy iz
+thermo_style custom step temp c_msd[4]
 thermo          100
-run             5000
+run             1000

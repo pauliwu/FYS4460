@@ -1,6 +1,9 @@
-import os
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+import os
+from tqdm import tqdm
+from scipy.stats import linregress
 
 def read_log(log, thermo):
      with open(log, 'r') as infile:
@@ -15,22 +18,30 @@ def read_log(log, thermo):
                 outfile.write(line)
                 line = infile.readline()
 
-os.system('lammps < in.silicon')
-read_log('log.lammps', 'test')
-df = pd.read_csv('test', delim_whitespace=True)
-df['msd[4]'].plot()
-plt.show()
-
-"""
-for temp in [1, 2, 3, 5, 10]:
-    infile = "logs/log.temp_%d" % temp
-    outfile = "diffs/diff_temp_%d.csv" % temp
-    
-    if("log.temp_%d" % temp not in os.listdir('logs')):
-        os.system('lammps < in.diffusion -log ' + infile + ' -var temp %f' % temp)
-        read_log(infile, outfile)
+temperatures = np.linspace(1.0, 100.0, 100)
+equilibrium_temperatures = np.zeros(len(temperatures))
+diffusion_constants = np.zeros(len(temperatures))
+for i, temp in enumerate(tqdm(temperatures)):
+    infile = "logs/log.temp_%.4f" % temp
+    outfile = "data/msd.temp_%.4f" % temp
+    if not os.path.exists(infile):
+        os.system('lammps < in.silicon -log ' + infile + ' -var temp %f > /dev/null' % temp)
+    read_log(infile, outfile)
 
     df = pd.read_csv(outfile, delim_whitespace=True)
-    df['msd[4]'].plot()
+    a, b = linregress(df['Step'], df['msd[4]'])[:2]
+    plt.plot(df['Step'], df['msd[4]'])
+    plt.plot(df['Step'], a*df['Step']+b)
+    plt.savefig('plots/diffusion_temp_%.4f.png' % temp)
+    plt.clf()
+
+    # find equilibrium timestep
+    mean_temp = df['Temp'].mean()
+    df['RelDiff'] = abs((df['Temp']-mean_temp)/(df['Temp'].iloc[0]-mean_temp))
+    equilibrium = (df['RelDiff'] < 0.1).idxmax()
+ 
+    diffusion_constants[i] = a/6
+    equilibrium_temperatures[i] = df['Temp'][equilibrium:].mean()
+
+plt.plot(diffusion_constants)
 plt.show()
-"""

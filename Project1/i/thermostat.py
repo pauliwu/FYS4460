@@ -1,6 +1,8 @@
-import os
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+import os
+from tqdm import tqdm
 
 def read_log(log, thermo):
      with open(log, 'r') as infile:
@@ -15,14 +17,18 @@ def read_log(log, thermo):
                 outfile.write(line)
                 line = infile.readline()
 
-for temp in [1, 2, 3, 5, 10]:
-    infile = "logs/log.temp_%d" % temp
-    outfile = "diffs/diff_temp_%d.csv" % temp
+temperatures = np.linspace(0.1, 5.0, 10)
+for i, temp in enumerate(tqdm(temperatures)):
+    infile = "logs/log.temp_%.4f" % temp
+    outfile = "data/thermo.temp_%.4f" % temp
     
-    if("log.temp_%d" % temp not in os.listdir('logs')):
-        os.system('lammps < in.diffusion -log ' + infile + ' -var temp %f' % temp)
-        read_log(infile, outfile)
+    if not os.path.exists(infile):
+        os.system('lammps < in.nosehoover -log ' + infile + ' -var temp %f > /dev/null' % temp)
+    read_log(infile, outfile)
 
     df = pd.read_csv(outfile, delim_whitespace=True)
-    df['msd[4]'].plot()
-plt.show()
+    plt.plot(df['Step'], df['Temp'])
+    plt.xlabel('Timestep')
+    plt.ylabel('Temperature')
+    plt.savefig('plots/thermostat_temp_%.4f.png' % temp)
+    plt.clf()

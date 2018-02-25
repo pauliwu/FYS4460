@@ -12,7 +12,6 @@
 #   epsilon, sigma, a, lambda, gamma, costheta0, A, B, p, q, tol
 
 # Here are the original parameters in metal units, for Silicon from:
-#
 # Stillinger and Weber,  Phys. Rev. B, v. 31, p. 5262, (1985)
 #
 
