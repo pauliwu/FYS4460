@@ -109,3 +109,4 @@ ENV/
 Project1/*/logs/
 Project1/*/data/
 Project1/*/dumps/
+Project1/*/plots/
