@@ -23,12 +23,12 @@ for i, temp in enumerate(tqdm(temperatures)):
     outfile = "data/thermo.temp_%.4f" % temp
     
     if not os.path.exists(infile):
-        os.system('lammps < in.nosehoover -log ' + infile + ' -var temp %f > /dev/null' % temp)
+        os.system('lammps < in.berendsen -log ' + infile + ' -var temp %f > /dev/null' % temp)
     read_log(infile, outfile)
 
     df = pd.read_csv(outfile, delim_whitespace=True)
     plt.plot(df['Step'], df['Temp'])
     plt.xlabel('Timestep')
     plt.ylabel('Temperature')
-    plt.savefig('plots/thermostat_temp_%.4f.png' % temp)
+    plt.savefig('plots/berendsen_temp_%.4f.png' % temp)
     plt.clf()
