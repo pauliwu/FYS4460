@@ -1,9 +1,9 @@
 from pylab import *
 from scipy.ndimage import measurements
 
-no_samples = 1000
+no_samples = 10000
 L = 200
-p = 0.58
+p = 0.5925
 
 sizes = []
 
@@ -24,7 +24,7 @@ plt.show()
 plt.plot(np.log(bin_edges[1:]), np.log(hist))
 plt.show()
 
-bins = np.logspace(0, np.log(sizes.max()), 200)
+bins = np.logspace(0, np.log(sizes.max()), 50)
 hist, bin_edges = np.histogram(sizes, bins=bins)
 
 bin_centers = (bins[1:] + bins[:-1])*0.5
