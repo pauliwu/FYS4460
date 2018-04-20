@@ -14,7 +14,8 @@ mass 1 1.0
 pair_style lj/cut 3.0
 pair_coeff 1 1 1.0 1.0 3.0
 
-# python code runs here
+python create_matrix input 1 SELF format p file matrix.py
+python create_matrix invoke
 
 velocity spheres create 1.05 87287
 fix 1 spheres nve

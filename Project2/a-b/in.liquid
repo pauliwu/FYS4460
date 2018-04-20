@@ -22,6 +22,6 @@ velocity cylinder create 0.851 87287
 fix 1 cylinder nve
 variable g atom gmask(cylinder)
 
-dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz v_g
+dump 1 cylinder custom 10 dump.lammpstrj id type x y z vx vy vz v_g
 thermo 100
 run 1000
