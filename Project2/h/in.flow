@@ -1,0 +1,28 @@
+# 3d Lennard-Jones liquid
+units lj
+dimension 3
+boundary p p p
+atom_style atomic
+
+lattice fcc 0.844
+region simbox block 0 20 0 20 0 20
+create_box 1 simbox
+create_atoms 1 box
+
+mass 1 1.0
+
+pair_style lj/cut 3.0
+pair_coeff 1 1 1.0 1.0 3.0
+
+region cut cylinder z 10 10 2 EDGE EDGE
+group cylinder region cut
+group stationary subtract all cylinder
+
+velocity cylinder create 0.851 87287
+fix 1 cylinder nve
+fix 2 cylinder addforce 0.0 0.0 0.1
+variable g atom gmask(cylinder)
+
+dump 1 cylinder custom 10 dump.lammpstrj id type x y z vx vy vz v_g
+thermo 100
+run 25000

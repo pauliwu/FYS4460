@@ -1,0 +1,29 @@
+# 3d Lennard-Jones liquid
+units lj
+dimension 3
+boundary p p p
+atom_style atomic
+
+lattice fcc 0.844
+region simbox block 0 20 0 20 0 20
+create_box 1 simbox
+create_atoms 1 box
+
+mass 1 1.0
+
+pair_style lj/cut 3.0
+pair_coeff 1 1 1.0 1.0 3.0
+
+python create_matrix input 1 SELF format p file half.py
+python create_matrix invoke
+
+velocity spheres create 1.50 87287
+fix 1 spheres nve
+variable g atom gmask(spheres)
+
+compute msd spheres msd com yes
+
+dump 1 spheres custom 10 dump.lammpstrj id type x y z vx vy vz v_g
+thermo_style custom step temp c_msd[4]
+thermo 100
+run 25000
