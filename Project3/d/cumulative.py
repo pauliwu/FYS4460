@@ -10,4 +10,7 @@ for i in range(len(bins)):
 cumulative /= len(z)
 
 plt.plot(bins, cumulative)
-plt.show()
+plt.xlabel("z")
+plt.ylabel("P(Z > z)")
+plt.title("Cumulative distribution for U(0,1)**(-2)")
+plt.savefig("cumulative.png")

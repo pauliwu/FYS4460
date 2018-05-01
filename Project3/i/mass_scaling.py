@@ -2,7 +2,7 @@ from pylab import *
 from scipy.ndimage import measurements
 from tqdm import tqdm
 
-no_samples = 100
+no_samples = 1000
 pc = 0.59275
 ks = np.array([k for k in range(4, 12)])
 areas = np.zeros(len(ks))
@@ -30,4 +30,4 @@ for i, k in enumerate(ks):
     
     areas[i] = areaSum / percolations
 plot(2**ks, areas)
-show()
+savefig("mass_scaling.png")
