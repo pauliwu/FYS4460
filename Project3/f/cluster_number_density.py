@@ -7,7 +7,7 @@ L = 500
 p_below = np.array([0.45, 0.50, 0.54, 0.57, 0.58])
 p_above = np.array([0.75, 0.70, 0.65, 0.62, 0.60])
 
-print("p from below: \n")
+print("\n p from below:")
 for p in p_below:
 
     print("p = %f" % p)
@@ -43,7 +43,7 @@ plt.legend()
 plt.savefig("cnd_below.png")
 plt.clf()
 
-print("p from above: \n")
+print("\n p from above:")
 for p in p_above:
 
     print("p = %f" % p)
