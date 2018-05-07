@@ -3,7 +3,7 @@ from scipy.ndimage import measurements
 from tqdm import tqdm
 
 no_samples = 1000
-L = 500
+L = 512
 p_below = np.array([0.45, 0.50, 0.54, 0.57, 0.58])
 p_above = np.array([0.75, 0.70, 0.65, 0.62, 0.60])
 
@@ -34,11 +34,11 @@ for p in p_below:
     
     bin_centers = (bins[1:] + bins[:-1])*0.5
     cluster_number_density = hist/(no_samples*L*L*np.diff(bins))
-    
-    plt.plot(bin_centers, cluster_number_density, label="p=%f" % p)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.xlim([10**(0), 10**5])
+
+    plt.plot(np.log10(bin_centers), np.log10(cluster_number_density), label="p=%f" % p)
+    plt.xlabel("log10 of cluster size s")
+    plt.ylabel("log10 of cluster number density")
+    plt.title("Cluster number density as a function of size s and fill probability p")
 plt.legend()
 plt.savefig("cnd_below.png")
 plt.clf()
@@ -70,11 +70,11 @@ for p in p_above:
     
     bin_centers = (bins[1:] + bins[:-1])*0.5
     cluster_number_density = hist/(no_samples*L*L*np.diff(bins))
-    
-    plt.plot(bin_centers, cluster_number_density, label="p=%f" % p)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.xlim([10**(0), 10**5])
+
+    plt.plot(np.log10(bin_centers), np.log10(cluster_number_density), label="p=%f" % p)
+    plt.xlabel("log10 cluster size s")
+    plt.ylabel("log10 cluster number density")
+    plt.title("Cluster number density as a function of size s and fill probability p")
 plt.legend()
 plt.savefig("cnd_above.png")
 plt.clf()

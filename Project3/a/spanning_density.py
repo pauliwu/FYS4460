@@ -24,7 +24,7 @@ for i in tqdm(range(no_samples)):
         if(maxsize == L):
             spanning_density[j] += area.max()
 
-spanning_density /= (no_probabilities*L*L)
+spanning_density /= (no_samples*L*L)
 plot(occupied_probability, spanning_density)
 xlabel("Fill probability p")
 ylabel("Spanning cluster density P(p,L)")

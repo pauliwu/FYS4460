@@ -30,8 +30,8 @@ for no_samples in [10, 100, 1000]:
                     spanning_density[j] += area.max()
                     percolation_probability[j] += 1
         
-        spanning_density /= (no_probabilities*L*L)
-        percolation_probability /= no_probabilities
+        spanning_density /= (no_samples*L*L)
+        percolation_probability /= no_samples
     
         figure(1)
         plot(occupied_probability, percolation_probability, label="L=%d" % L)

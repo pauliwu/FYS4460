@@ -9,23 +9,31 @@ def create_matrix(lmpptr):
     pos = np.random.uniform(boxlo, boxhi, [no_spheres, 3])
     radius = np.random.uniform(2.0, 3.0, no_spheres)
 
+    regionnumber = 1
+    regionlist = ""
     for i in range(no_spheres):
         dims = pos[i]
         r = radius[i]
-        create_sphere(lmpptr, dims, r)
-        for i in range(len(dims)):
-            if dims[i] + r > boxhi[i]:
-                dims[i] -= boxhi[i] - boxlo[i]
-                create_sphere(lmpptr, dims, r)
-            elif dims[i] - r < boxlo[i]:
-                dims[i] += boxhi[i] - boxlo[i]
-                create_sphere(lmpptr, dims, r)
+        regionlist += "cut%d " % regionnumber
+        create_sphere(lmpptr, dims, r, regionnumber)
+        regionnumber += 1
+        for j in range(len(dims)):
+            if dims[j] + r > boxhi[j]:
+                dims[j] -= boxhi[j] - boxlo[j]
+                regionlist += "cut%d " % regionnumber
+                create_sphere(lmpptr, dims, r, regionnumber)
+                regionnumber += 1
+            elif dims[j] - r < boxlo[j]:
+                dims[j] += boxhi[j] - boxlo[j]
+                regionlist += "cut%d " % regionnumber
+                create_sphere(lmpptr, dims, r, regionnumber)
+                regionnumber += 1
+    lmp.command('region notspheres union %d ' % (regionnumber-1) + regionlist + " side out")
 
-def create_sphere(lmpptr, dims, r):
+def create_sphere(lmpptr, dims, r, regionnumber):
     lmp = lammps(ptr=lmpptr)
+    region = "cut%d" % regionnumber
     lmp.commands_list([
-        'region cut sphere %f %f %f %f units box' %
-            (dims[0], dims[1], dims[2], r),
-        'delete_atoms porosity cut 0.5 87287',
-        'group spheres region cut',
-        'region cut delete'])
+        'region %s sphere %f %f %f %f units box' %
+            (region, dims[0], dims[1], dims[2], r),
+        'group spheres region %s' % region])

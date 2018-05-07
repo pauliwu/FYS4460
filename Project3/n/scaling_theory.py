@@ -2,14 +2,14 @@ from pylab import *
 from scipy.ndimage import measurements
 from tqdm import tqdm
 
-no_samples = 10
+no_samples = 100
 no_probabilities = 100
 sizes = np.array([25, 50, 100, 200, 400, 800])
+p_xs = np.linspace(0.3, 0.8, 11)
+p_pis = np.zeros((len(sizes), len(p_xs)))
+
 occupied_probability = linspace(0.4,1.0,no_probabilities)
 percolation_probability = np.zeros(no_probabilities)
-prob_percolation_low = np.zeros(len(sizes))
-prob_percolation_high = np.zeros(len(sizes))
-
 for k, L in enumerate(sizes):
     print("L = %d" % L)
     for i in tqdm(range(no_samples)):
@@ -29,13 +29,8 @@ for k, L in enumerate(sizes):
                 percolation_probability[j] += 1
     
     percolation_probability /= no_samples
-    prob_percolation_low[k] = occupied_probability[argmin(percolation_probability > 0.3)]
-    prob_percolation_high[k] = occupied_probability[argmin(percolation_probability > 0.8)]
+    for l, xs in enumerate(p_xs):
+        p_pis[k][l] = occupied_probability[np.argmax(percolation_probability > xs)]
 
-    plot(occupied_probability, percolation_probability)
-
-show()
-
-plot(sizes, prob_percolation_low)
-plot(sizes, prob_percolation_high)
-show()
+    plt.plot(p_pis[k])
+plt.show()

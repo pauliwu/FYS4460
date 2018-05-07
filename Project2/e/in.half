@@ -17,11 +17,14 @@ pair_coeff 1 1 1.0 1.0 3.0
 python create_matrix input 1 SELF format p file half.py
 python create_matrix invoke
 
-velocity spheres create 1.50 87287
-fix 1 spheres nve
-variable g atom gmask(spheres)
+group moving subtract all spheres
+delete_atoms porosity notspheres 0.5 482793
 
-dump 1 spheres custom 10 dump.lammpstrj id type x y z vx vy vz v_g
+velocity moving create 1.50 87287
+fix 1 moving nve
+variable g atom gmask(moving)
+
+dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz v_g
 thermo_style custom step temp
 thermo 100
-run 25000
+run 500

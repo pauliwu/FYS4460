@@ -1,5 +1,6 @@
 from pylab import *
 from scipy.ndimage import measurements
+from scipy.stats import linregress
 from tqdm import tqdm
 
 no_samples = 1000
@@ -29,5 +30,12 @@ for i, k in enumerate(ks):
             percolations += 1
     
     areas[i] = areaSum / percolations
-plot(2**ks, areas)
-savefig("mass_scaling.png")
+
+plt.plot(ks, np.log2(areas))
+plt.title("Mass of the percolation cluster")
+plt.xlabel("log2 of system size L")
+plt.ylabel("log2 of mass M")
+plt.savefig("mass_scaling.png")
+
+lnc, D = linregress(ks, np.log2(areas))[:2]
+print(D)
