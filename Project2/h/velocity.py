@@ -9,8 +9,8 @@ pipeline = import_file("dump.lammpstrj", multiple_frames=True)
 
 center = [16.8, 16.8]
 bin_min, bin_max = [0.0, 5.0]
-no_bins = 50
-bin_size = abs(bin_max - bin_min)/no_bins
+no_bins = 20
+bins = np.linspace(bin_min, bin_max, no_bins)
 
 radialModifier = \
     ComputePropertyModifier(
@@ -19,31 +19,24 @@ radialModifier = \
             )
 pipeline.modifiers.append(radialModifier)
 
-radialBinModifier = \
-    ComputePropertyModifier(
-            output_property="RadialBin",
-            expressions=["rint(RadialDistance/%f)" % bin_size]
-            )
-pipeline.modifiers.append(radialBinModifier)
-
+time_averaged_velocity = np.zeros(no_bins)
 for frame in range(dataset.anim.first_frame, dataset.anim.last_frame):
-    time_averaged_velocity = np.zeros(no_bins)
-    if(frame >= 200):
+    if(frame >= 999):
         data = pipeline.compute(frame)
-        radial_bins = data.particle_properties['RadialBin']
+        radii = data.particle_properties['RadialDistance']
         velocity_z = data.particle_properties['Velocity'][:,2]
 
+        inds = np.digitize(radii, bins, right=True) - 1
         avg_velocity = np.zeros(no_bins)
         count = np.zeros(no_bins)
-        for i in range(len(radial_bins)):
-            bin_i = int(radial_bins[i])
-            avg_velocity[bin_i] += velocity_z[i]
-            count[bin_i] += 1
-        mask = np.nonzero(count)
-        avg_velocity[mask] /= count[mask]
 
+        for i in range(len(radii)):
+            avg_velocity[inds[i]] += velocity_z[i]
+            count[inds[i]] += 1
+        mask = np.nonzero(avg_velocity)
+        avg_velocity[mask] /= count[mask]
+        
         time_averaged_velocity += avg_velocity
 
-time_averaged_velocity /= 49
-plt.plot(np.linspace(0.0, 5.0, no_bins), time_averaged_velocity)
+plt.plot(bins, time_averaged_velocity)
 plt.show()

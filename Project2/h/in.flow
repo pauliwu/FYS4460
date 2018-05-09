@@ -14,16 +14,22 @@ mass 1 1.0
 pair_style lj/cut 3.0
 pair_coeff 1 1 1.0 1.0 3.0
 
-region cut cylinder z 10 10 2 EDGE EDGE
+fix 1 all nve
+
+run 10000
+
+unfix 1
+
+region cut cylinder z 10 10 3 EDGE EDGE
 delete_atoms porosity cut 0.5 482793
 group cylinder region cut
 group stationary subtract all cylinder
 
-velocity cylinder create 0.851 87287
+velocity cylinder create 1.0 87287
 fix 1 cylinder nve
-fix 2 cylinder addforce 0.0 0.0 1.0
+fix 2 cylinder addforce 0.0 0.0 0.1
 variable g atom gmask(cylinder)
 
 dump 1 cylinder custom 10 dump.lammpstrj id type x y z vx vy vz v_g
 thermo 100
-run 2500
+run 50000
