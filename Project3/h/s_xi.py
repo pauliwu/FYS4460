@@ -4,7 +4,7 @@ from scipy.stats import linregress
 from tqdm import tqdm
 
 no_samples = 1000
-L = 512
+L = 1024
 p_c = 0.59275
 p_below = np.linspace(0.45, 0.58, 14)
 s_xis = np.zeros(len(p_below))
@@ -72,12 +72,12 @@ plt.ylabel("log10 F(s/s_xi)")
 plt.savefig("F.png")
 plt.clf()
 
-plt.plot(p_below, s_xis)
+plt.plot(np.abs(p_c - p_below), s_xis)
 plt.title("Characteristic cluster size as a function of fill probability p")
-plt.xlabel("fill probability p")
-plt.ylabel("characterisitic cluster size s_xi")
+plt.xlabel("Fill probability p")
+plt.ylabel("Characterisitic cluster size s_xi")
 plt.savefig("s_xi.png")
 plt.clf()
 
-lnc, sigma = linregress(np.log10(p_c - p_below), np.log10(s_xis))[:2]
-print(sigma)
+sigma_inverse, lnc = linregress(np.log10(np.abs(p_c - p_below)), np.log10(s_xis))[:2]
+print(-1/sigma_inverse)

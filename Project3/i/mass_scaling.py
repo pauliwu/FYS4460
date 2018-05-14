@@ -37,5 +37,5 @@ plt.xlabel("log2 of system size L")
 plt.ylabel("log2 of mass M")
 plt.savefig("mass_scaling.png")
 
-lnc, D = linregress(ks, np.log2(areas))[:2]
+D, lnc = linregress(ks, np.log2(areas))[:2]
 print(D)

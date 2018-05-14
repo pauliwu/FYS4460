@@ -41,8 +41,8 @@ for j, k in enumerate(ks):
     bin_centers = bin_centers[mask]
     cluster_number_density = cluster_number_density[mask]
 
-    lnc, tau = linregress(np.log10(bin_centers), np.log10(cluster_number_density))[:2]
-    taus[j] = tau
+    tau, lnc = linregress(np.log10(bin_centers), np.log10(cluster_number_density))[:2]
+    taus[j] = -tau
 
     plt.plot(np.log10(bin_centers), np.log10(cluster_number_density), label="L=2**%d" % k)
 plt.legend()

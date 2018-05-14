@@ -1,8 +1,9 @@
 from pylab import *
 from scipy.ndimage import measurements
+from scipy.stats import linregress
 from tqdm import tqdm
 
-no_samples = 100
+no_samples = 1000
 no_probabilities = 100
 sizes = np.array([25, 50, 100, 200, 400, 800])
 p_pi_below = np.zeros(len(sizes))
@@ -32,14 +33,19 @@ for k, L in enumerate(sizes):
     p_pi_below[k] = occupied_probability[np.argmax(percolation_probability > 0.3)]
     p_pi_above[k] = occupied_probability[np.argmax(percolation_probability > 0.8)]
 
-plt.plot(p_pi_below)
-plt.show()
+plt.plot(sizes, p_pi_below)
+plt.xlabel("System size L")
+plt.ylabel("Fill probability")
+plt.title("Fill probability for Pi(p,L)=0.3")
+plt.savefig("p_pi_below.png")
+plt.clf()
 
-plt.plot(p_pi_above)
-plt.show()
+plt.plot(sizes, p_pi_above)
+plt.xlabel("System size L")
+plt.ylabel("Fill probability")
+plt.title("Fill probability for Pi(p,L)=0.8")
+plt.savefig("p_pi_above.png")
+plt.clf()
 
-plt.plot(np.log2(p_pi_above - p_pi_below), np.log2(sizes))
-plt.show()
-
-lnc, nu = linregress(np.log(p_pi_above - p_pi_below), np.log(sizes))[:2]
-print(nu)
+nu, lnc = linregress(np.log(sizes), np.log(p_pi_above - p_pi_below))[:2]
+print(-1/nu)

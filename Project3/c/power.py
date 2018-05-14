@@ -34,7 +34,7 @@ for k, L in enumerate(sizes):
     lnp = log(occupied_probability - critical_probability)
     lnP = log(spanning_density)
 
-    a, b = linregress(lnp, lnP)[:2]
+    b, a = linregress(lnp, lnP)[:2]
     betas[k] = b
 
     plot(lnp, lnP, \
