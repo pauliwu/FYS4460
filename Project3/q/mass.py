@@ -65,7 +65,7 @@ D, lnc = linregress(log(sizes), log(masses))[:2]
 print(D)
 
 L = 2**9
-ps = np.linspace(0.45, 0.58, 14)
+ps = pc + 10**(np.linspace(-9.0, -1.0, 100))
 p_sc = np.zeros(len(ps))
 for j, p in enumerate(ps):
     print("p = %f" % p)
@@ -78,7 +78,7 @@ for j, p in enumerate(ps):
 
 plot(np.abs(ps - pc), p_sc)
 plt.title("Singly connected cluster density")
-plt.xlabel("Size L")
+plt.xlabel("(p - p_c)")
 plt.ylabel("Cluster density")
 plt.savefig("p_sc.png")
 plt.clf()
