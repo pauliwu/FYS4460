@@ -65,11 +65,11 @@ D, lnc = linregress(log(sizes), log(masses))[:2]
 print(D)
 
 L = 2**9
-ps = pc + 10**(np.linspace(-9.0, -1.0, 100))
+ps = pc + np.linspace(0.001, 0.1, 10)
 p_sc = np.zeros(len(ps))
 for j, p in enumerate(ps):
     print("p = %f" % p)
-    mass = 0
+    mass = 0.0
     for i in tqdm(range(no_samples)):
         mass += masswalk(L, p)
     mass /= no_samples
