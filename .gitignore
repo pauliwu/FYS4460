@@ -105,8 +105,9 @@ ENV/
 
 # LAMMPS
 *.lammpstrj
-*.lammps
+log.*
 logs/
 data/
 dumps/
 plots/
+*.csv

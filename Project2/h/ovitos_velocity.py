@@ -7,10 +7,13 @@ import matplotlib.pyplot as plt
 
 pipeline = import_file("dump.lammpstrj", multiple_frames=True)
 
-center = [16.8, 16.8]
-bin_min, bin_max = [0.0, 5.0]
-no_bins = 20
-bins = np.linspace(bin_min, bin_max, no_bins)
+b = 5.72
+sigma = 3.405
+bs = b/sigma
+center = [10*bs, 10*bs]
+bin_min, bin_max = [0.0*bs, 5.0*bs]
+no_bins = 30
+bins = np.sqrt(np.linspace(bin_min**2, bin_max**2, no_bins))
 
 radialModifier = \
     ComputePropertyModifier(
@@ -20,13 +23,13 @@ radialModifier = \
 pipeline.modifiers.append(radialModifier)
 
 time_averaged_velocity = np.zeros(no_bins)
-for frame in range(dataset.anim.first_frame, dataset.anim.last_frame):
-    if(frame >= 999):
-        data = pipeline.compute(frame)
+for frame in range(dataset.anim.first_frame+1, dataset.anim.last_frame+1):
+    if(frame >= 500):
+        data = pipeline.compute(frame-1)
         radii = data.particle_properties['RadialDistance']
         velocity_z = data.particle_properties['Velocity'][:,2]
 
-        inds = np.digitize(radii, bins, right=True) - 1
+        inds = np.digitize(radii, bins) - 1
         avg_velocity = np.zeros(no_bins)
         count = np.zeros(no_bins)
 
@@ -38,5 +41,5 @@ for frame in range(dataset.anim.first_frame, dataset.anim.last_frame):
         
         time_averaged_velocity += avg_velocity
 
-plt.plot(bins, time_averaged_velocity)
-plt.show()
+time_averaged_velocity /= 5500
+np.savetxt("radial_velocity.csv", time_averaged_velocity)

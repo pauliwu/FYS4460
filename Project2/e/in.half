@@ -14,17 +14,24 @@ mass 1 1.0
 pair_style lj/cut 3.0
 pair_coeff 1 1 1.0 1.0 3.0
 
+velocity all create 1.5 87287
+fix 1 all nve
+log log.dump
+run 1000
+unfix 1
+log log.lammps
+
 python create_matrix input 1 SELF format p file half.py
 python create_matrix invoke
 
 group moving subtract all spheres
-delete_atoms porosity notspheres 0.5 482793
+delete_atoms porosity notspheres 0.5 87287
 
-velocity moving create 1.50 87287
+velocity moving create 1.5 87287
 fix 1 moving nve
 variable g atom gmask(moving)
 
 dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz v_g
 thermo_style custom step temp
 thermo 100
-run 500
+run 10000

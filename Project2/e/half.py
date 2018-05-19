@@ -7,7 +7,7 @@ def create_matrix(lmpptr):
     boxlo, boxhi, xy, yz, xz, periodicity, box_change = lmp.extract_box()
     no_spheres = 20
     pos = np.random.uniform(boxlo, boxhi, [no_spheres, 3])
-    radius = np.random.uniform(2.0, 3.0, no_spheres)
+    radius = np.random.uniform(2.0, 3.0, no_spheres)*2.94
 
     regionnumber = 1
     regionlist = ""

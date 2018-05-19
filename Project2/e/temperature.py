@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import os
 
@@ -16,10 +17,14 @@ def read_log(log, thermo):
                 line = infile.readline()
 
 infile = 'log.lammps'
-outfile = 'data.temp'
+outfile = 'temp.csv'
 if not os.path.exists(infile):
     os.system('lmp_serial < in.half')
 read_log(infile, outfile)
 df = pd.read_csv(outfile, delim_whitespace=True)
+
 plt.plot(df['Step'], df['Temp'])
-plt.show()
+plt.title("Temperature of nanoporous system")
+plt.xlabel("Timestep")
+plt.ylabel("Temperature (LJ-units)")
+plt.savefig("temperature.png")

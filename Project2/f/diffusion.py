@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import os
 from scipy.stats import linregress
@@ -17,7 +18,7 @@ def read_log(log, thermo):
                 line = infile.readline()
 
 infile = 'log.lammps'
-outfile = 'data.diff'
+outfile = 'diff.csv'
 if not os.path.exists(infile):
     os.system('lmp_serial < in.diffusion')
 read_log(infile, outfile)
@@ -26,6 +27,11 @@ df = pd.read_csv(outfile, delim_whitespace=True)
 a, b = linregress(df['Step'], df['c_msd[4]'])[:2]
 plt.plot(df['Step'], df['c_msd[4]'])
 plt.plot(df['Step'], a*df['Step']+b)
-plt.show()
+plt.legend(["MSD", "Linear Fit"])
+plt.title("Mean squared displacement")
+plt.xlabel("Timestep")
+plt.ylabel("MSD")
+plt.savefig("diffusion.png")
+
 diffusion = a/6
 print("Diffusion constant: %f" % diffusion)
