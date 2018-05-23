@@ -1,0 +1,36 @@
+# 3d Lennard-Jones liquid
+units lj
+dimension 3
+boundary p p p
+atom_style atomic
+
+lattice fcc 0.844
+region simbox block 0 20 0 20 0 20
+create_box 1 simbox
+create_atoms 1 box
+
+mass 1 1.0
+
+pair_style lj/cut 3.0
+pair_coeff 1 1 1.0 1.0 3.0
+
+velocity all create 1.5 87287
+fix 1 all nve
+log log.dump
+run 1000
+unfix 1
+log log.lammps
+
+python create_matrix input 2 SELF ${no_spheres} format pi file porosity.py
+python create_matrix invoke
+
+group moving subtract all spheres
+
+velocity moving create 1.5 87287
+fix 1 moving nve
+fix 2 moving addforce 0.0 0.0 0.1
+variable g atom gmask(moving)
+
+dump 1 moving custom 10 ${dump} id type x y z vx vy vz v_g
+thermo 100
+run 20000
