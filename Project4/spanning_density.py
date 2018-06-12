@@ -1,15 +1,13 @@
-import seaborn as sns
-import sys
+from methods import *
 from pylab import *
 from scipy.ndimage import measurements
 from tqdm import tqdm
+import seaborn as sns
+import sys
 
 sns.set()
-sys.path.insert(0, '/home/andreas/Code/Software/Diamond_Square')
 
-from methods import *
-
-ds_steps = 5
+ds_steps = 9
 max_rnd = 1.0
 max_index = 2**ds_steps
 L = max_index + 1
@@ -28,8 +26,8 @@ for i in tqdm(range(no_samples)):
         lw, num = measurements.label(z)
         area = measurements.sum(z, lw, index=arange(lw.max() + 1))
         areaImg = area[lw]
-        sliced = measurements.find_objects(areaImg == areaImg.max())
 
+        sliced = measurements.find_objects(areaImg == areaImg.max())
         sliceX = sliced[0][1]
         sliceY = sliced[0][0]
         maxsize = max(sliceX.stop - sliceX.start, sliceY.stop - sliceY.start)
@@ -48,8 +46,8 @@ for i in tqdm(range(no_samples)):
         lw, num = measurements.label(z)
         area = measurements.sum(z, lw, index=arange(lw.max() + 1))
         areaImg = area[lw]
-        sliced = measurements.find_objects(areaImg == areaImg.max())
 
+        sliced = measurements.find_objects(areaImg == areaImg.max())
         sliceX = sliced[0][1]
         sliceY = sliced[0][0]
         maxsize = max(sliceX.stop - sliceX.start, sliceY.stop - sliceY.start)
@@ -59,6 +57,7 @@ for i in tqdm(range(no_samples)):
 
 spanning_density /= (no_samples*L*L)
 plot(occupied_probability, spanning_density)
+
 legend(['Diamond-Square', 'Rand'])
 plt.savefig('plots/spanning_density')
 show()

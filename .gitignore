@@ -104,10 +104,9 @@ ENV/
 .DS_STORE
 
 # LAMMPS
-*.lammpstrj
-log.*
-logs/
 data/
 dumps/
-plots/
+logs/
+log.*
 *.csv
+*.lammpstrj

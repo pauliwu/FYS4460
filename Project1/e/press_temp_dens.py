@@ -6,6 +6,10 @@ from tqdm import tqdm
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.optimize import curve_fit
 
+os.system('mkdir -p data')
+os.system('mkdir -p logs')
+os.system('mkdir -p plots')
+
 def read_log(log, thermo):
      with open(log, 'r') as infile:
         with open(thermo, 'w') as outfile:
@@ -35,7 +39,7 @@ for i, temp in enumerate(tqdm(temperatures)):
         infile = "logs/log.temp_%.4f_rho_%.4f" % (temp, rho)
         outfile = "data/pressure.temp_%.4f_rho_%.4f" % (temp, rho)
         if not os.path.exists(infile):
-            os.system('lammps < in.temperaturedensity -log ' + infile + ' -var temp %f' % temp 
+            os.system('mpirun -np 4 lmp_mpi < in.temperaturedensity -log ' + infile + ' -var temp %f' % temp 
                         + ' -var rho %f > /dev/null' % rho)
         read_log(infile, outfile)
 

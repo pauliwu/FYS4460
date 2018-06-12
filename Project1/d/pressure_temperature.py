@@ -3,6 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+os.system('mkdir -p data')
+os.system('mkdir -p logs')
+os.system('mkdir -p plots')
+
 def read_log(log, thermo):
      with open(log, 'r') as infile:
         with open(thermo, 'w') as outfile:
@@ -23,7 +27,7 @@ for i, temp in enumerate(temperatures):
     infile = "logs/log.temp_%.4f" % temp
     outfile = "data/pressure.temp_%.4f" % temp
     if not os.path.exists(infile):
-        os.system('lammps < in.pressure -log ' + infile + ' -var temp %d' % temp)
+        os.system('lmp_serial < in.pressure -log ' + infile + ' -var temp %d' % temp)
     read_log(infile, outfile)
 
     df = pd.read_csv(outfile, delim_whitespace=True)

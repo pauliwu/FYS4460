@@ -5,6 +5,10 @@ import os
 from tqdm import tqdm
 from scipy.stats import linregress
 
+os.system('mkdir -p data')
+os.system('mkdir -p logs')
+os.system('mkdir -p plots')
+
 def read_log(log, thermo):
      with open(log, 'r') as infile:
         with open(thermo, 'w') as outfile:
@@ -25,13 +29,13 @@ for i, temp in enumerate(tqdm(temperatures)):
     infile = "logs/log.temp_%.4f" % temp
     outfile = "data/msd.temp_%.4f" % temp
     if not os.path.exists(infile):
-        os.system('lammps < in.diffusion -log ' + infile + ' -var temp %f > /dev/null' % temp)
+        os.system('mpirun -np 4 lmp_mpi < in.diffusion -log ' + infile + ' -var temp %f > /dev/null' % temp)
     read_log(infile, outfile)
 
     df = pd.read_csv(outfile, delim_whitespace=True)
 
-    a, b = linregress(df['Step'], df['msd[4]'])[:2]
-    plt.plot(df['Step'], df['msd[4]'])
+    a, b = linregress(df['Step'], df['c_msd[4]'])[:2]
+    plt.plot(df['Step'], df['c_msd[4]'])
     plt.plot(df['Step'], a*df['Step']+b)
     plt.xlabel('Timestep')
     plt.ylabel('MSD')

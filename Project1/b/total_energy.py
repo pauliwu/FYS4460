@@ -2,6 +2,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
+os.system('mkdir -p data')
+os.system('mkdir -p logs')
+os.system('mkdir -p plots')
+
 def read_log(log, thermo):
      with open(log, 'r') as infile:
         with open(thermo, 'w') as outfile:
@@ -18,7 +22,7 @@ for dt in [0.0001, 0.0005, 0.0010, 0.0050, 0.0100]:
     infile = "logs/log.dt_%.4f" % dt
     outfile = "data/energy.dt_%.4f" % dt
     if not os.path.exists(infile):
-        os.system('lammps < in.timestep -log ' + infile + ' -var dt %f' % dt)
+        os.system('lmp_serial < in.timestep -log ' + infile + ' -var dt %f' % dt)
     read_log(infile, outfile)
     df = pd.read_csv(outfile, delim_whitespace=True)
     df['TotEngNormal'] = df['TotEng']/df['TotEng'].iloc[0]*100

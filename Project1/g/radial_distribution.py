@@ -4,11 +4,14 @@ import matplotlib.pyplot as plt
 import os
 from tqdm import tqdm
 
+os.system('mkdir -p data')
+os.system('mkdir -p plots')
+
 temperatures = np.linspace(0.1, 3.0, 10)
 
 for i, temp in enumerate(tqdm(temperatures)):
     # run simulation
-    os.system('lammps < in.radial -var temp %.4f > /dev/null' % temp)
+    os.system('mpirun -np 4 lmp_mpi < in.radial -var temp %.4f > /dev/null' % temp)
     
     # compute radial distributions
     os.system('ovitos ovitos_radial.py %.4f' % temp)

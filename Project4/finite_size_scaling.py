@@ -1,14 +1,12 @@
-import seaborn as sns
-import sys
+from methods import *
 from pylab import *
 from scipy.ndimage import measurements
 from scipy.stats import linregress
 from tqdm import tqdm
+import seaborn as sns
+import sys
 
 sns.set()
-sys.path.insert(0, '/home/andreas/Code/Software/Diamond_Square')
-
-from methods import *
 
 max_rnd = 1.0
 no_samples = 1000
@@ -22,9 +20,9 @@ occupied_probability = linspace(0.1, 1.0, no_probabilities)
 percolation_probability = np.zeros(no_probabilities)
 
 for k, L in enumerate(steps):
-    L = max_indices[k] + 1
     ds_steps = steps[k]
     max_index = max_indices[k]
+    L = max_indices[k] + 1
     print("L = %d" % L)
     for i in tqdm(range(no_samples)):
         seeded_map = f_seed_grid(L, max_rnd)
@@ -36,8 +34,8 @@ for k, L in enumerate(steps):
             lw, num = measurements.label(z)
             area = measurements.sum(z, lw, index=arange(lw.max() + 1))
             areaImg = area[lw]
-            sliced = measurements.find_objects(areaImg == areaImg.max())
     
+            sliced = measurements.find_objects(areaImg == areaImg.max())
             sliceX = sliced[0][1]
             sliceY = sliced[0][0]
             maxsize = max(sliceX.stop - sliceX.start, sliceY.stop - sliceY.start)
@@ -63,5 +61,5 @@ plt.title("Fill probability for Pi(p,L)=0.8")
 plt.savefig("plots/p_pi_above.png")
 plt.clf()
 
-nu, lnc = linregress(np.log(steps), np.log(p_pi_above - p_pi_below))[:2]
+nu, lnc = linregress(np.log(2**steps + 1), np.log(p_pi_above - p_pi_below))[:2]
 print(-1/nu)

@@ -5,6 +5,11 @@ import os
 from tqdm import tqdm
 from scipy.stats import linregress
 
+os.system('mkdir -p data')
+os.system('mkdir -p dumps')
+os.system('mkdir -p logs')
+os.system('mkdir -p plots')
+
 def read_log(log, thermo):
      with open(log, 'r') as infile:
         with open(thermo, 'w') as outfile:
@@ -30,23 +35,23 @@ for i, temp in enumerate(tqdm(temperatures)):
         os.system('mpirun -np 4 lammps -in spce-water-system.in -log %s \
                     -var temp %.4f -var dump %s > /dev/null' 
                     % (logfile, temp, dumpfile))
-    
+
     # compute radial distributions
-    # os.system('ovitos ovitos_radial.py %.4f' % temp)
-    # dfs = [pd.read_csv('data/radial.temp_%.4f_frame_%d' % (temp, frame), 
-    #         delim_whitespace=True, 
-    #         names=['r', 'g(r)']) for frame in range(0,501,10)]
-    # df = pd.concat(dfs, axis=1)
-    # df['time averaged g(r)'] = df['g(r)'].sum(1)/len(df['g(r)'].columns)
-    # 
-    # if i%10 == 0:
-    #     no_bins = len(df['time averaged g(r)'])
-    #     plt.plot(np.linspace(0,15,no_bins), df['time averaged g(r)'])
-    #     plt.axis([0,15,0,8])
-    #     plt.xlabel('distance r')
-    #     plt.ylabel('g(r)')
-    #     plt.savefig('plots/radial_temp_%.4f.png' % temp)
-    #     plt.clf()
+    os.system('ovitos ovitos_radial.py %.4f' % temp)
+    dfs = [pd.read_csv('data/radial.temp_%.4f_frame_%d' % (temp, frame), 
+            delim_whitespace=True, 
+            names=['r', 'g(r)']) for frame in range(0,501,10)]
+    df = pd.concat(dfs, axis=1)
+    df['time averaged g(r)'] = df['g(r)'].sum(1)/len(df['g(r)'].columns)
+    
+    if i%10 == 0:
+        no_bins = len(df['time averaged g(r)'])
+        plt.plot(np.linspace(0,15,no_bins), df['time averaged g(r)'])
+        plt.axis([0,15,0,8])
+        plt.xlabel('distance r')
+        plt.ylabel('g(r)')
+        plt.savefig('plots/radial_temp_%.4f.png' % temp)
+        plt.clf()
 
     # compute diffusion constant
     read_log(logfile, datafile)

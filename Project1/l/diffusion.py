@@ -5,6 +5,10 @@ import os
 from tqdm import tqdm
 from scipy.stats import linregress
 
+os.system('mkdir -p data')
+os.system('mkdir -p logs')
+os.system('mkdir -p plots')
+
 def read_log(log, thermo):
      with open(log, 'r') as infile:
         with open(thermo, 'w') as outfile:
@@ -24,7 +28,7 @@ for i, temp in enumerate(tqdm(temperatures)):
     infile = "logs/log.temp_%.4f" % temp
     outfile = "data/msd.temp_%.4f" % temp
     if not os.path.exists(infile):
-        os.system('mpirun -np 4 lammps -in in.silicon -log ' + infile + 
+        os.system('lammps -in in.silicon -log ' + infile + 
                     ' -var temp %f > /dev/null' % temp)
     read_log(infile, outfile)
 

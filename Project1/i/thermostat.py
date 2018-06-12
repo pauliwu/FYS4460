@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 import os
 from tqdm import tqdm
 
+os.system('mkdir -p data')
+os.system('mkdir -p logs')
+os.system('mkdir -p plots')
+
 def read_log(log, thermo):
      with open(log, 'r') as infile:
         with open(thermo, 'w') as outfile:
@@ -18,17 +22,19 @@ def read_log(log, thermo):
                 line = infile.readline()
 
 temperatures = np.linspace(0.1, 5.0, 10)
-for i, temp in enumerate(tqdm(temperatures)):
-    infile = "logs/log.temp_%.4f" % temp
-    outfile = "data/thermo.temp_%.4f" % temp
+thermostats = ['in.berendsen', 'in.nosehoover']
+for name in thermostats:
+    for i, temp in enumerate(tqdm(temperatures)):
+        infile = "logs/log.temp_%.4f_%s" % (temp, name[3:])
+        outfile = "data/thermo.temp_%.4f_%s" % (temp, name[3:])
+        
+        if not os.path.exists(infile):
+            os.system('mpirun -np 4 lmp_mpi < %s -log ' % name + infile + ' -var temp %f > /dev/null' % temp)
+        read_log(infile, outfile)
     
-    if not os.path.exists(infile):
-        os.system('lammps < in.berendsen -log ' + infile + ' -var temp %f > /dev/null' % temp)
-    read_log(infile, outfile)
-
-    df = pd.read_csv(outfile, delim_whitespace=True)
-    plt.plot(df['Step'], df['Temp'])
-    plt.xlabel('Timestep')
-    plt.ylabel('Temperature')
-    plt.savefig('plots/berendsen_temp_%.4f.png' % temp)
-    plt.clf()
+        df = pd.read_csv(outfile, delim_whitespace=True)
+        plt.plot(df['Step'], df['Temp'])
+        plt.xlabel('Timestep')
+        plt.ylabel('Temperature')
+        plt.savefig('plots/%s_temp_%.4f.png' % (name[3:], temp))
+        plt.clf()
