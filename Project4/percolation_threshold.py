@@ -6,13 +6,14 @@ from tqdm import tqdm
 import seaborn as sns
 import sys
 
-sns.set()
+sns.set(font_scale=2)
+rcParams['figure.figsize'] = [16, 14]
 
 max_rnd = 1.0
 no_samples = 1000
 no_probabilities = 100
-nu = 8.63659663548
-xs = 0.3
+nu = 9.32041189553
+xs = 0.1
 
 steps = np.array([n for n in range(4,10)])
 max_indices = np.array([2**n for n in steps])
@@ -55,3 +56,5 @@ plt.savefig("plots/p_pi.png")
 
 cx, pc = linregress((2**steps + 1)**(-1/nu), p_pis)[:2]
 print(pc)
+
+# pc = 0.455479500389

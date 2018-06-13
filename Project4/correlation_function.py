@@ -6,7 +6,8 @@ from tqdm import tqdm
 import seaborn as sns
 import sys
 
-sns.set()
+sns.set(font_scale=2)
+rcParams['figure.figsize'] = [16, 14]
 
 def correlation_function(lw):
     nx, ny = lw.shape
@@ -35,8 +36,9 @@ max_index = 2**ds_steps
 L = max_index + 1
 no_samples = 10
 
-p_rand = 0.58
+p_rand = 0.45
 r_avg, g_avg = zeros(2*L), zeros(2*L)
+
 for j in tqdm(range(no_samples)):
     r = rand(L,L)
 
@@ -55,8 +57,9 @@ H_rand = b/2
 
 plot(log(r_avg), log(g_avg))
 
-p_corr = 0.48
+p_corr = 0.45
 r_avg, g_avg = zeros(2*L), zeros(2*L)
+
 for j in tqdm(range(no_samples)):
     seeded_map = f_seed_grid(L, max_rnd)
     final_height_map = f_dsmain(seeded_map, ds_steps, max_index, max_rnd)
@@ -79,4 +82,11 @@ H_corr = b/2
 plot(log(r_avg), log(g_avg))
 
 print(H_rand, H_corr)
+title('correlation function g(r,p,L), L=%d' % L)
+xlabel('radius r')
+ylabel('correlation function g(r,p,L)')
+legend(['Rand p=%.2f' % p_rand, 'Diamond-Square p=%.2f' % p_corr])
+savefig('plots/correlation_function')
 show()
+
+# H_rand = -1.64735012012, H_corr = -0.577095428313

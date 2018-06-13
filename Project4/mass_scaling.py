@@ -6,11 +6,12 @@ from tqdm import tqdm
 import seaborn as sns
 import sys
 
-sns.set()
+sns.set(font_scale=2)
+rcParams['figure.figsize'] = [16, 14]
 
 max_rnd = 1.0
 no_samples = 1000
-pc = 0.482464912454
+pc = 0.455479500389
 
 steps = np.array([k for k in range(4,10)])
 max_indices = np.array([2**n for n in steps])
@@ -54,4 +55,4 @@ plt.savefig("plots/mass_scaling.png")
 D, lnc = linregress(np.log(2**steps + 1), np.log(areas))[:2]
 print(D)
 
-# D = 1.96945260398
+# D = 1.96113028002

@@ -6,7 +6,8 @@ from tqdm import tqdm
 import seaborn as sns
 import sys
 
-sns.set()
+sns.set(font_scale=2)
+rcParams['figure.figsize'] = [14, 16]
 
 max_rnd = 1.0
 no_samples = 1000
@@ -44,13 +45,13 @@ for k, L in enumerate(steps):
                 percolation_probability[j] += 1
     
     percolation_probability /= no_samples
-    p_pi_below[k] = occupied_probability[np.argmax(percolation_probability > 0.3)]
+    p_pi_below[k] = occupied_probability[np.argmax(percolation_probability > 0.1)]
     p_pi_above[k] = occupied_probability[np.argmax(percolation_probability > 0.8)]
 
 plt.plot(2**steps+1, p_pi_below)
 plt.xlabel("System size L")
 plt.ylabel("Fill probability")
-plt.title("Fill probability for Pi(p,L)=0.3")
+plt.title("Fill probability for Pi(p,L)=0.1")
 plt.savefig("plots/p_pi_below.png")
 plt.clf()
 

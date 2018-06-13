@@ -5,7 +5,8 @@ from tqdm import tqdm
 import seaborn as sns
 import sys
 
-sns.set()
+sns.set(font_scale=2)
+rcParams['figure.figsize'] = [14, 16]
 
 ds_steps = 9
 max_rnd = 1.0
@@ -59,5 +60,8 @@ percolation_probability /= (no_samples)
 plot(occupied_probability, percolation_probability)
 
 legend(['Diamond-Square', 'Rand'])
-plt.savefig('plots/percolation_probability')
+title('Percolation probability, %d samples, L=%d' % (no_samples, L))
+xlabel('Fill probability p')
+ylabel('Percolation probability $\Pi(p,L)$')
+savefig('plots/percolation_probability')
 show()
